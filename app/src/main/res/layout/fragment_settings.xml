@@ -26,16 +26,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="알림 설정"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="24dp"/>
 
-        <Switch
-            android:id="@+id/notificationSwitch"
+        <Spinner
+            android:id="@+id/frequencySpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="매일 오후 6시 알림 받기"
-            android:textSize="16sp" />
+            android:layout_marginBottom="16dp"/>
+
+        <Spinner
+            android:id="@+id/daySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"/>
+
+        <Spinner
+            android:id="@+id/timeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"/>
 
         <View
             android:layout_width="match_parent"
@@ -48,30 +59,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="테마 설정"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="16dp"/>
 
         <RadioGroup
             android:id="@+id/themeRadioGroup"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="24dp">
 
             <RadioButton
                 android:id="@+id/lightTheme"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="라이트 모드"
-                android:textSize="16sp" />
+                android:layout_marginBottom="8dp"/>
 
             <RadioButton
                 android:id="@+id/darkTheme"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="다크 모드"
-                android:textSize="16sp" />
-
+                android:text="다크 모드"/>
         </RadioGroup>
+
+        <Button
+            android:id="@+id/btnSaveSettings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="설정 저장"
+            android:layout_gravity="end"/>
 
     </LinearLayout>
 

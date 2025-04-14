@@ -5,4 +5,33 @@
     <string name="menu_generate">번호생성</string>
     <string name="menu_history">히스토리</string>
     <string name="menu_settings">설정</string>
+    <string-array name="frequency_options">
+        <item>매일</item>
+        <item>매주</item>
+    </string-array>
+
+    <string-array name="day_options">
+        <item>월요일</item>
+        <item>화요일</item>
+        <item>수요일</item>
+        <item>목요일</item>
+        <item>금요일</item>
+        <item>토요일</item>
+        <item>일요일</item>
+    </string-array>
+
+    <string-array name="time_options">
+        <item>오전 9시</item>
+        <item>오전 10시</item>
+        <item>오전 11시</item>
+        <item>오후 12시</item>
+        <item>오후 1시</item>
+        <item>오후 2시</item>
+        <item>오후 3시</item>
+        <item>오후 4시</item>
+        <item>오후 5시</item>
+        <item>오후 6시</item>
+        <item>오후 7시</item>
+        <item>오후 8시</item>
+    </string-array>
 </resources>

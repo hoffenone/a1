@@ -1,5 +1,6 @@
 package com.example.hf_a1
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -12,17 +13,26 @@ import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.AdRequest
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.hf_a1.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // 테마 설정을 onCreate 이전에 로드
+        loadThemeSettings()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupAds()
         setupBottomNavigation(savedInstanceState)
+    }
+
+    private fun loadThemeSettings() {
+        val sharedPrefs = getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
+        val themeMode = sharedPrefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(themeMode)
     }
 
     private fun setupAds() {
