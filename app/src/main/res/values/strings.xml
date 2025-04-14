@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Hf_A1</string>
+    <string name="main_content_area">메인 콘텐츠 영역</string>
+    <string name="bottom_navigation_description">하단 네비게이션 메뉴</string>
+    <string name="menu_generate">번호생성</string>
+    <string name="menu_history">히스토리</string>
+    <string name="menu_settings">설정</string>
+</resources>

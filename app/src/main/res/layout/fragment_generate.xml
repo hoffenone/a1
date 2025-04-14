@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tvRemainingGenerations"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginEnd="16dp"/>
+
+        <Button
+            android:id="@+id/btnAddGeneration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="광고 보고 횟수 추가"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/selectMethodText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="번호 생성 방식을 선택하세요"
+        android:textSize="20sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/btnToday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오늘의 번호" />
+
+    <Button
+        android:id="@+id/btnWordMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="단어 조합으로 생성" />
+
+    <Button
+        android:id="@+id/btnFreeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="문장 직접 작성하기" />
+
+    <ScrollView
+        android:id="@+id/wordScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <GridLayout
+            android:id="@+id/wordGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:padding="8dp"
+            android:alignmentMode="alignMargins">
+        </GridLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/freeTextLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/inputSentence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="문장을 입력하세요"
+            android:inputType="text"
+            android:minLines="3"
+            android:gravity="top|start" />
+
+        <Button
+            android:id="@+id/btnGenerateFromInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="번호 생성"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="24dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/blurredText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="나머지 2세트의 번호를 보려면 광고를 시청해 주세요"
+        android:layout_marginTop="18dp"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btnReveal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="광고 보고 추가 번호 보기"
+        android:visibility="gone" />
+
+</LinearLayout> 

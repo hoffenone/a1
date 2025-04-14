@@ -1,0 +1,14 @@
+# Android Studio
+.idea/
+.gradle/
+build/
+*.iml
+
+# OS
+.DS_Store
+
+# local config
+local.properties
+
+# Crashlytics / Firebase
+crashlytics-build.properties
