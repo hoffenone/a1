@@ -5,6 +5,7 @@
     <string name="menu_generate">번호생성</string>
     <string name="menu_history">히스토리</string>
     <string name="menu_settings">설정</string>
+    <string name="menu_winning">당첨번호</string>
     <string-array name="frequency_options">
         <item>매일</item>
         <item>매주</item>

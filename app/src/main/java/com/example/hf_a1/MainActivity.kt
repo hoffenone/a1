@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.hf_a1.fragments.GenerateFragment
 import com.example.hf_a1.fragments.HistoryFragment
 import com.example.hf_a1.fragments.SettingsFragment
+import com.example.hf_a1.fragments.WinningNumbersFragment
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.AdRequest
@@ -58,6 +59,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_generate -> replaceFragment(GenerateFragment())
                 R.id.nav_history -> replaceFragment(HistoryFragment())
+                R.id.nav_winning -> replaceFragment(WinningNumbersFragment())
                 R.id.nav_settings -> replaceFragment(SettingsFragment())
                 else -> false
             }.let { true }

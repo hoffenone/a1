@@ -34,12 +34,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/historyText"
+        <LinearLayout
+            android:id="@+id/historyContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:lineSpacingExtra="8dp" />
+            android:orientation="vertical" />
 
     </ScrollView>
 

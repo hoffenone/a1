@@ -10,6 +10,7 @@ import com.example.hf_a1.generator.LottoGenerator
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.util.*
+import com.example.hf_a1.model.LottoNumber
 
 class LottoViewModel : ViewModel() {
     companion object {
@@ -24,13 +25,13 @@ class LottoViewModel : ViewModel() {
     private val _currentLottoSets = MutableLiveData<List<List<Int>>>()
     val currentLottoSets: LiveData<List<List<Int>>> = _currentLottoSets
 
-    private val _historyData = MutableLiveData<List<List<Int>>>()
-    val historyData: LiveData<List<List<Int>>> = _historyData
+    private val _historyData = MutableLiveData<List<LottoNumber>>()
+    val historyData: LiveData<List<LottoNumber>> = _historyData
 
     private val selectedWords = mutableListOf<String>()
     private lateinit var sharedPreferences: SharedPreferences
     private val gson = Gson()
-    private val historyType = object : TypeToken<List<List<Int>>>() {}.type
+    private val historyType = object : TypeToken<List<LottoNumber>>() {}.type
 
     var isSentenceComplete = false
         private set
@@ -160,7 +161,7 @@ class LottoViewModel : ViewModel() {
         return selectedWords.joinToString(" ")
     }
 
-    fun loadHistory(): List<List<Int>> {
+    fun loadHistory(): List<LottoNumber> {
         if (!::sharedPreferences.isInitialized) {
             Log.w("LottoViewModel", "SharedPreferences가 초기화되지 않았습니다")
             return emptyList()
@@ -168,7 +169,7 @@ class LottoViewModel : ViewModel() {
         
         return try {
             val historyJson = sharedPreferences.getString(HISTORY_KEY, "[]")
-            val history = gson.fromJson<List<List<Int>>>(historyJson, historyType) ?: emptyList()
+            val history = gson.fromJson<List<LottoNumber>>(historyJson, historyType) ?: emptyList()
             _historyData.value = history
             history
         } catch (e: Exception) {
@@ -185,7 +186,8 @@ class LottoViewModel : ViewModel() {
         
         try {
             val history = loadHistory().toMutableList()
-            history.addAll(sets)
+            val newEntries = sets.map { LottoNumber(it) }
+            history.addAll(newEntries)
             
             val recentHistory = if (history.size > MAX_HISTORY_SIZE) {
                 history.takeLast(MAX_HISTORY_SIZE)
@@ -243,5 +245,21 @@ class LottoViewModel : ViewModel() {
             isBlurredVisible = isBlurredVisible,
             isRevealButtonVisible = isRevealButtonVisible
         )
+    }
+
+    fun updateWinningNumbers(winningNumbers: List<Int>, bonusNumber: Int, drawDate: Long) {
+        val history = loadHistory().toMutableList()
+        
+        // 각 번호의 당첨 여부 확인
+        history.forEach { lottoNumber ->
+            val matches = lottoNumber.numbers.intersect(winningNumbers.toSet())
+            lottoNumber.matchCount = matches.size
+            lottoNumber.hasBonusMatch = lottoNumber.numbers.contains(bonusNumber)
+        }
+        
+        // 업데이트된 히스토리 저장
+        val historyJson = gson.toJson(history)
+        sharedPreferences.edit().putString(HISTORY_KEY, historyJson).apply()
+        _historyData.value = history
     }
 } 

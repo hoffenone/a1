@@ -8,4 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_background">#FF121212</color>
+    <color name="win_first">#FF0000</color>    <!-- 1등: 빨강 -->
+    <color name="win_second">#FF6B00</color>   <!-- 2등: 주황 -->
+    <color name="win_third">#FFD700</color>    <!-- 3등: 금색 -->
+    <color name="win_fourth">#4CAF50</color>   <!-- 4등: 초록 -->
+    <color name="win_fifth">#2196F3</color>    <!-- 5등: 파랑 -->
+    <color name="gray">#999999</color>         <!-- 지난 번호: 회색 -->
 </resources>
