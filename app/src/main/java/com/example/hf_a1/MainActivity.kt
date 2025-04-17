@@ -1,93 +1,76 @@
 package com.example.hf_a1
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.example.hf_a1.fragments.GenerateFragment
-import com.example.hf_a1.fragments.HistoryFragment
-import com.example.hf_a1.fragments.SettingsFragment
-import com.example.hf_a1.fragments.WinningNumbersFragment
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
-import com.google.android.gms.ads.AdRequest
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.hf_a1.databinding.ActivityMainBinding
-import androidx.appcompat.app.AppCompatDelegate
+import com.example.hf_a1.fragments.WinningNumbersFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // 테마 설정을 onCreate 이전에 로드
-        loadThemeSettings()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupAds()
-        setupBottomNavigation(savedInstanceState)
+        setupClickListeners()
+        setupFragmentManager()
     }
 
-    private fun loadThemeSettings() {
-        val sharedPrefs = getSharedPreferences("AppSettings", Context.MODE_PRIVATE)
-        val themeMode = sharedPrefs.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        AppCompatDelegate.setDefaultNightMode(themeMode)
-    }
-
-    private fun setupAds() {
-        try {
-            MobileAds.initialize(this) { initializationStatus ->
-                val statusMap = initializationStatus.adapterStatusMap
-                for ((className, status) in statusMap) {
-                    Log.d("Ads", "Adapter name: $className, Description: ${status.description}")
-                }
-            }
-
-            val requestConfig = RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR))
-                .build()
-            MobileAds.setRequestConfiguration(requestConfig)
-        } catch (e: Exception) {
-            Log.e("MainActivity", "광고 초기화 실패", e)
-        }
-    }
-
-    private fun setupBottomNavigation(savedInstanceState: Bundle?) {
-        binding.bottomNav.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_generate -> replaceFragment(GenerateFragment())
-                R.id.nav_history -> replaceFragment(HistoryFragment())
-                R.id.nav_winning -> replaceFragment(WinningNumbersFragment())
-                R.id.nav_settings -> replaceFragment(SettingsFragment())
-                else -> false
-            }.let { true }
+    private fun setupClickListeners() {
+        binding.settingsButton.setOnClickListener {
+            // TODO: 설정 화면으로 이동
         }
 
-        if (savedInstanceState == null) {
-            replaceFragment(GenerateFragment())
+        binding.adButton.setOnClickListener {
+            // TODO: 광고 보기 기능 구현
         }
-    }
 
-    private fun replaceFragment(fragment: Fragment) {
-        try {
+        binding.historyButton.setOnClickListener {
+            // TODO: 히스토리 화면으로 이동
+        }
+
+        binding.makeNumberButton.setOnClickListener {
+            // TODO: 번호 생성
+        }
+
+        binding.winningButton.setOnClickListener {
+            // 당첨 번호 확인 화면으로 이동
+            binding.fragmentContainer.visibility = View.VISIBLE
+            hideMainUI()
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(
-                    R.anim.fade_in,
-                    R.anim.fade_out
-                )
-                .replace(R.id.fragmentContainer, fragment)
+                .replace(R.id.fragmentContainer, WinningNumbersFragment())
                 .addToBackStack(null)
                 .commit()
-        } catch (e: Exception) {
-            Log.e("MainActivity", "Fragment 전환 실패", e)
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // 리소스 정리
+    private fun setupFragmentManager() {
+        supportFragmentManager.addOnBackStackChangedListener {
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                binding.fragmentContainer.visibility = View.GONE
+                showMainUI()
+            }
+        }
+    }
+
+    private fun hideMainUI() {
+        binding.lottoMachineImage.visibility = View.GONE
+        binding.titleText.visibility = View.GONE
+        binding.settingsButton.visibility = View.GONE
+        binding.remainingDrawsText.visibility = View.GONE
+        binding.adButton.visibility = View.GONE
+        binding.navigationContainer.visibility = View.GONE
+    }
+
+    private fun showMainUI() {
+        binding.lottoMachineImage.visibility = View.VISIBLE
+        binding.titleText.visibility = View.VISIBLE
+        binding.settingsButton.visibility = View.VISIBLE
+        binding.remainingDrawsText.visibility = View.VISIBLE
+        binding.adButton.visibility = View.VISIBLE
+        binding.navigationContainer.visibility = View.VISIBLE
     }
 }
 

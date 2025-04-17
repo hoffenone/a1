@@ -1,86 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+    <!-- 설정 버튼 -->
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/setting_icon"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:padding="16dp"
-        android:gravity="center_horizontal">
+        android:scaleType="fitCenter"
+        android:elevation="1dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="설정"
+        android:translationY="-24dp" />
 
-        <TextView
-            android:id="@+id/roundTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/dateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginBottom="24dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/numbersTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/bonusNumberTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_marginBottom="24dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/totalPrizeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:visibility="gone"/>
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <!-- 회차 정보 -->
+    <TextView
+        android:id="@+id/drawNumberText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:text="제 1167회 당첨번호"
+        android:textSize="32sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/black_han_sans"
+        android:layout_marginTop="120dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- 추첨일 -->
+    <TextView
+        android:id="@+id/drawDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추첨일 : 2025/04/12"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/black_han_sans"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/drawNumberText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 당첨 번호 컨테이너 (5개) -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/winningNumbersContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="48dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@id/drawDateText">
+
+        <!-- 당첨 번호들 (5개) -->
+        <TextView
+            android:id="@+id/number1"
+            style="@style/WinningNumberCircle"
+            android:layout_marginEnd="8dp" />
 
         <TextView
-            android:id="@+id/errorView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_red_dark"
-            android:visibility="gone"/>
+            android:id="@+id/number2"
+            style="@style/WinningNumberCircle"
+            android:layout_marginEnd="8dp" />
 
-        <Button
-            android:id="@+id/retryButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="다시 시도"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/number3"
+            style="@style/WinningNumberCircle"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/number4"
+            style="@style/WinningNumberCircle"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/number5"
+            style="@style/WinningNumberCircle" />
+
     </LinearLayout>
 
-</FrameLayout> 
+    <!-- 보너스 번호 컨테이너 -->
+    <LinearLayout
+        android:id="@+id/bonusNumberContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintTop_toBottomOf="@id/winningNumbersContainer">
+
+        <!-- 보너스 번호 라벨 -->
+        <TextView
+            android:id="@+id/bonusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="보너스 번호"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/black_han_sans"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 보너스 번호 -->
+        <TextView
+            android:id="@+id/number6"
+            style="@style/WinningNumberCircle" />
+
+    </LinearLayout>
+
+    <!-- 다음 추첨 정보 -->
+    <TextView
+        android:id="@+id/nextDrawTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다음번 추첨까지..."
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/black_han_sans"
+        android:layout_marginTop="64dp"
+        app:layout_constraintTop_toBottomOf="@id/bonusNumberContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/remainingTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[ 6 ]일 [ 12 ]시간 [ 30 ]분\n남았습니다."
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/black_han_sans"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/nextDrawTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/nextDrawDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추첨일 : 2025/04/19"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/black_han_sans"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/remainingTimeText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 하단 네비게이션 -->
+    <LinearLayout
+        android:id="@+id/navigationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="16dp"
+        android:baselineAligned="false"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/historyButton"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/history_tab"
+                android:contentDescription="히스토리"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="히스토리"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/black_han_sans"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/homeButton"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/home_tab"
+                android:contentDescription="홈으로"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="홈으로"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/black_han_sans"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/winningButton"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/thisweek_tab"
+                android:contentDescription="당첨 번호"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이번주 당첨번호"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/black_han_sans"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout> 

@@ -1,26 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="false">
 
-    <!-- 이 영역에 프래그먼트들이 표시됨 -->
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/main_content_area" />
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 하단 네비게이션 바 -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
+    <!-- 중앙 로또 추첨기 이미지 -->
+    <ImageView
+        android:id="@+id/lottoMachineImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/main_lotto_image"
+        android:layout_marginHorizontal="0dp"
+        app:layout_constraintWidth_percent="1.35"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toBottomOf="@id/titleText"
+        app:layout_constraintBottom_toTopOf="@id/remainingDrawsText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="로또 추첨기"
+        android:elevation="-1dp" />
+
+    <!-- 상단 타이틀과 설정 버튼 -->
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="당신은 1등을 한다"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:fontFamily="@font/black_han_sans"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:elevation="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/setting_icon"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        android:elevation="1dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="설정"
+        android:translationY="-24dp" />
+
+    <!-- 남은 횟수 텍스트 -->
+    <TextView
+        android:id="@+id/remainingDrawsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오늘 남은 횟수 : 5 회"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/black_han_sans"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@id/adButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 광고 버튼 -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/adButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="광고보고 한세트 더 뽑기"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:fontFamily="@font/black_han_sans"
+        android:background="@drawable/yellow_button_background"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"
+        android:paddingVertical="12dp"
+        app:layout_constraintWidth_percent="0.75"
+        app:layout_constraintBottom_toTopOf="@id/navigationContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- 하단 네비게이션 아이콘들 -->
+    <LinearLayout
+        android:id="@+id/navigationContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        android:contentDescription="@string/bottom_navigation_description"
-        app:menu="@menu/bottom_nav_menu"
-        app:labelVisibilityMode="labeled" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingVertical="16dp"
+        android:layout_marginBottom="16dp"
+        android:baselineAligned="false"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/historyButton"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/history_tab"
+                android:contentDescription="히스토리"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="히스토리"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/black_han_sans"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/makeNumberButton"
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                android:src="@drawable/make_number"
+                android:contentDescription="번호 생성"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="번호 생성"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/black_han_sans"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/winningButton"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/thisweek_tab"
+                android:contentDescription="당첨 번호"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이번주 당첨번호"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/black_han_sans"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

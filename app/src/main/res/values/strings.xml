@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Hf_A1</string>
+    <string name="app_name">로또 번호 생성기</string>
     <string name="main_content_area">메인 콘텐츠 영역</string>
-    <string name="bottom_navigation_description">하단 네비게이션 메뉴</string>
+    <string name="bottom_navigation_description">하단 네비게이션</string>
     <string name="menu_generate">번호생성</string>
     <string name="menu_history">히스토리</string>
     <string name="menu_settings">설정</string>
@@ -35,4 +36,16 @@
         <item>오후 7시</item>
         <item>오후 8시</item>
     </string-array>
+
+    <string name="splash_text">당신은 1등을 한다</string>
+    <string name="splash_image_description">로또 추첨기 이미지</string>
+    <string name="app_title">당신은 1등을 한다</string>
+    <string name="settings_button_description">설정</string>
+    <string name="lotto_machine_description">로또 추첨기</string>
+    <string name="remaining_draws">오늘 남은 횟수 : [ ] 회</string>
+    <string name="watch_ad_button">광고보고 마저 확인하기</string>
+    <string name="main_title">두근두근!\n두근두근!</string>
+    <string name="history_button_description">히스토리</string>
+    <string name="home_button_description">홈</string>
+    <string name="winning_button_description">당첨번호 확인</string>
 </resources>

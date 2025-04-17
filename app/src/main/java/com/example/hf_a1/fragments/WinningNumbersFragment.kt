@@ -4,35 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.hf_a1.R
+import com.example.hf_a1.network.LottoService
+import com.example.hf_a1.network.LottoResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
-import java.text.SimpleDateFormat
-import java.util.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import android.util.Log
-import com.example.hf_a1.network.LottoService
-import com.example.hf_a1.network.LottoResponse
+import java.text.SimpleDateFormat
+import java.util.*
 
 class WinningNumbersFragment : Fragment() {
-    private lateinit var roundTextView: TextView
-    private lateinit var dateTextView: TextView
-    private lateinit var numbersTextView: TextView
-    private lateinit var bonusNumberTextView: TextView
-    private lateinit var totalPrizeTextView: TextView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var errorView: TextView
-    private lateinit var retryButton: Button
+    private lateinit var drawNumberText: TextView
+    private lateinit var drawDateText: TextView
+    private lateinit var numberViews: List<TextView>
+    private lateinit var nextDrawTitle: TextView
+    private lateinit var remainingTimeText: TextView
+    private lateinit var nextDrawDateText: TextView
+    private lateinit var settingsButton: ImageButton
+    private lateinit var historyButton: View
+    private lateinit var homeButton: View
+    private lateinit var winningButton: View
     
     private var currentCall: Call<LottoResponse>? = null
     private val retrofit by lazy {
@@ -64,30 +63,52 @@ class WinningNumbersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViews(view)
+        setupClickListeners()
         fetchLatestWinningNumbers()
     }
 
     private fun initializeViews(view: View) {
-        roundTextView = view.findViewById(R.id.roundTextView)
-        dateTextView = view.findViewById(R.id.dateTextView)
-        numbersTextView = view.findViewById(R.id.numbersTextView)
-        bonusNumberTextView = view.findViewById(R.id.bonusNumberTextView)
-        totalPrizeTextView = view.findViewById(R.id.totalPrizeTextView)
-        progressBar = view.findViewById(R.id.progressBar)
-        errorView = view.findViewById(R.id.errorView)
-        retryButton = view.findViewById(R.id.retryButton)
+        drawNumberText = view.findViewById(R.id.drawNumberText)
+        drawDateText = view.findViewById(R.id.drawDateText)
+        nextDrawTitle = view.findViewById(R.id.nextDrawTitle)
+        remainingTimeText = view.findViewById(R.id.remainingTimeText)
+        nextDrawDateText = view.findViewById(R.id.nextDrawDateText)
+        settingsButton = view.findViewById(R.id.settingsButton)
+        historyButton = view.findViewById(R.id.historyButton)
+        homeButton = view.findViewById(R.id.homeButton)
+        winningButton = view.findViewById(R.id.winningButton)
 
-        retryButton.setOnClickListener {
-            fetchLatestWinningNumbers()
+        // Initialize number views
+        numberViews = listOf(
+            view.findViewById(R.id.number1),
+            view.findViewById(R.id.number2),
+            view.findViewById(R.id.number3),
+            view.findViewById(R.id.number4),
+            view.findViewById(R.id.number5),
+            view.findViewById(R.id.number6)
+        )
+    }
+
+    private fun setupClickListeners() {
+        settingsButton.setOnClickListener {
+            // TODO: Navigate to settings
+        }
+
+        historyButton.setOnClickListener {
+            // TODO: Navigate to history
+        }
+
+        homeButton.setOnClickListener {
+            // 메인화면으로 돌아가기
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+        winningButton.setOnClickListener {
+            // TODO: Refresh winning numbers
         }
     }
 
     private fun fetchLatestWinningNumbers() {
-        showLoading()
-        hideError()
-        
-        currentCall?.cancel()
-        
         val latestRound = calculateLatestRound()
         Log.d("WinningNumbers", "Fetching round: $latestRound")
         
@@ -96,90 +117,77 @@ class WinningNumbersFragment : Fragment() {
             override fun onResponse(call: Call<LottoResponse>, response: Response<LottoResponse>) {
                 if (!isAdded) return
                 
-                hideLoading()
                 if (response.isSuccessful) {
                     response.body()?.let { 
                         Log.d("WinningNumbers", "Success: $it")
                         updateUI(it)
-                        showContent()
                     } ?: run {
                         Log.e("WinningNumbers", "Empty response body")
-                        showError("데이터를 불러올 수 없습니다.")
                     }
                 } else {
                     val errorBody = response.errorBody()?.string()
                     Log.e("WinningNumbers", "Error: ${response.code()}, $errorBody")
-                    showError("서버 오류가 발생했습니다. (${response.code()})")
                 }
             }
 
             override fun onFailure(call: Call<LottoResponse>, t: Throwable) {
                 if (!isAdded) return
                 
-                hideLoading()
                 if (!call.isCanceled) {
                     Log.e("WinningNumbers", "Network failure", t)
-                    showError("네트워크 오류가 발생했습니다.\n${t.message}")
                 }
             }
         })
     }
 
-    private fun showLoading() {
-        progressBar.visibility = View.VISIBLE
-        hideContent()
-        hideError()
-    }
-
-    private fun hideLoading() {
-        progressBar.visibility = View.GONE
-    }
-
-    private fun showContent() {
-        roundTextView.visibility = View.VISIBLE
-        dateTextView.visibility = View.VISIBLE
-        numbersTextView.visibility = View.VISIBLE
-        bonusNumberTextView.visibility = View.VISIBLE
-        totalPrizeTextView.visibility = View.VISIBLE
-    }
-
-    private fun hideContent() {
-        roundTextView.visibility = View.GONE
-        dateTextView.visibility = View.GONE
-        numbersTextView.visibility = View.GONE
-        bonusNumberTextView.visibility = View.GONE
-        totalPrizeTextView.visibility = View.GONE
-    }
-
-    private fun showError(message: String) {
-        errorView.text = message
-        errorView.visibility = View.VISIBLE
-        retryButton.visibility = View.VISIBLE
-        hideContent()
-    }
-
-    private fun hideError() {
-        errorView.visibility = View.GONE
-        retryButton.visibility = View.GONE
-    }
-
     private fun updateUI(response: LottoResponse) {
-        roundTextView.text = "${response.drwNo}회 당첨번호"
-        dateTextView.text = "추첨일: ${response.drwNoDate}"
+        drawNumberText.text = "제 ${response.drwNo}회 당첨번호"
+        drawDateText.text = "추첨일 : ${response.drwNoDate}"
         
         val numbers = listOf(
             response.drwtNo1, response.drwtNo2, response.drwtNo3,
             response.drwtNo4, response.drwtNo5, response.drwtNo6
         ).sorted()
         
-        // 번호를 원 안에 표시하는 스타일 적용
-        val numbersText = numbers.joinToString("  ") { number ->
-            String.format("%02d", number)
+        numbers.forEachIndexed { index, number ->
+            numberViews[index].apply {
+                text = String.format("%02d", number)
+                setBackgroundResource(getBackgroundForNumber(number))
+            }
         }
-        numbersTextView.text = numbersText
-        
-        bonusNumberTextView.text = "보너스 번호: ${response.bnusNo}"
-        totalPrizeTextView.text = "1등 당첨금: ${formatPrize(response.firstWinamnt)}원"
+
+        // Calculate and display next draw info
+        updateNextDrawInfo(response.drwNoDate)
+    }
+
+    private fun getBackgroundForNumber(number: Int): Int {
+        return when (number) {
+            in 1..10 -> R.drawable.circle_1_10
+            in 11..20 -> R.drawable.circle_11_20
+            in 21..30 -> R.drawable.circle_21_30
+            in 31..40 -> R.drawable.circle_31_40
+            else -> R.drawable.circle_41_45
+        }
+    }
+
+    private fun updateNextDrawInfo(lastDrawDate: String) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val lastDraw = sdf.parse(lastDrawDate)
+        val calendar = Calendar.getInstance().apply {
+            time = lastDraw
+            add(Calendar.DATE, 7)  // Next draw is 7 days after
+            set(Calendar.HOUR_OF_DAY, 20)
+            set(Calendar.MINUTE, 45)
+        }
+
+        val now = Calendar.getInstance()
+        val diffInMillis = calendar.timeInMillis - now.timeInMillis
+        val days = diffInMillis / (24 * 60 * 60 * 1000)
+        val hours = (diffInMillis % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)
+        val minutes = (diffInMillis % (60 * 60 * 1000)) / (60 * 1000)
+
+        remainingTimeText.text = "[ $days ]일 [ $hours ]시간 [ $minutes ]분\n남았습니다."
+        nextDrawDateText.text = "추첨일 : ${sdf.format(calendar.time)}"
     }
 
     private fun calculateLatestRound(): Int {
@@ -194,12 +202,8 @@ class WinningNumbersFragment : Fragment() {
         return diffInWeeks + 1
     }
 
-    private fun formatPrize(amount: Long): String {
-        return String.format("%,d", amount)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        currentCall?.cancel() // 진행 중인 네트워크 요청 취소
+        currentCall?.cancel()
     }
 } 

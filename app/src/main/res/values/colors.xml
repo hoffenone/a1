@@ -5,13 +5,29 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="dark_background">#FF121212</color>
-    <color name="win_first">#FF0000</color>    <!-- 1등: 빨강 -->
-    <color name="win_second">#FF6B00</color>   <!-- 2등: 주황 -->
-    <color name="win_third">#FFD700</color>    <!-- 3등: 금색 -->
-    <color name="win_fourth">#4CAF50</color>   <!-- 4등: 초록 -->
-    <color name="win_fifth">#2196F3</color>    <!-- 5등: 파랑 -->
-    <color name="gray">#999999</color>         <!-- 지난 번호: 회색 -->
+    
+    <!-- 기본 색상 -->
+    <color name="black">#333333</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#757575</color>
+    <color name="light_gray">#F5F5F5</color>
+    <color name="dark_background">#121212</color>
+    
+    <!-- 당첨 등수별 색상 -->
+    <color name="win_first">#FFD32F2F</color>
+    <color name="win_second">#FFC2185B</color>
+    <color name="win_third">#FF7B1FA2</color>
+    <color name="win_fourth">#FF1976D2</color>
+    <color name="win_fifth">#FF009688</color>
+    
+    <!-- 하단 네비게이션 색상 -->
+    <color name="bottom_nav_icon_color">#333333</color>
+    <color name="bottom_nav_text_color">#333333</color>
+
+    <!-- 로또 번호 범위별 색상 -->
+    <color name="lotto_1_10">#FDD75D</color>
+    <color name="lotto_11_20">#98DEF8</color>
+    <color name="lotto_21_30">#FE862F</color>
+    <color name="lotto_31_40">#C4C4C4</color>
+    <color name="lotto_41_45">#84EEAA</color>
 </resources>
