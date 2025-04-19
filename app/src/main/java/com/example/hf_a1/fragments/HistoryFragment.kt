@@ -3,6 +3,7 @@ package com.example.hf_a1.fragments
 import android.app.AlertDialog
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,20 +13,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.hf_a1.R
 import com.example.hf_a1.model.LottoNumber
 import com.example.hf_a1.viewmodel.LottoViewModel
-import java.text.SimpleDateFormat
-import java.util.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 import com.example.hf_a1.network.LottoService
 import com.example.hf_a1.network.LottoResponse
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class HistoryFragment : Fragment() {
     private lateinit var viewModel: LottoViewModel
@@ -34,6 +32,23 @@ class HistoryFragment : Fragment() {
     private var latestWinningNumbers: List<Int>? = null
     private var latestBonusNumber: Int? = null
     private var latestDrawDate: Long = 0
+
+    companion object {
+        private const val TAG = "HistoryFragment"
+        private val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
+        private val drawDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        
+        private val retrofit by lazy {
+            Retrofit.Builder()
+                .baseUrl("https://www.dhlottery.co.kr/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        }
+        
+        private val lottoService by lazy {
+            retrofit.create(LottoService::class.java)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,51 +82,49 @@ class HistoryFragment : Fragment() {
     }
 
     private fun fetchLatestWinningNumbers() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.dhlottery.co.kr")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(LottoService::class.java)
         val latestRound = calculateLatestRound()
+        Log.d(TAG, "Fetching round: $latestRound")
 
-        service.getWinningNumbers(latestRound).enqueue(object : Callback<LottoResponse> {
-            override fun onResponse(call: Call<LottoResponse>, response: Response<LottoResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.let { 
-                        latestWinningNumbers = listOf(
-                            it.drwtNo1, it.drwtNo2, it.drwtNo3,
-                            it.drwtNo4, it.drwtNo5, it.drwtNo6
-                        ).sorted()
-                        latestBonusNumber = it.bnusNo
-                        
-                        // 당첨일 타임스탬프 설정 (토요일 저녁 8시 45분)
-                        val drawDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                            .parse(it.drwNoDate)
-                        val calendar = Calendar.getInstance().apply {
-                            time = drawDate
-                            set(Calendar.HOUR_OF_DAY, 20)
-                            set(Calendar.MINUTE, 45)
-                        }
-                        latestDrawDate = calendar.timeInMillis
-                        
-                        // 히스토리 업데이트
-                        viewModel.updateWinningNumbers(
-                            latestWinningNumbers!!,
-                            latestBonusNumber!!,
-                            latestDrawDate
-                        )
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val response = lottoService.getWinningNumbers(drwNo = latestRound.toString())
+                Log.d(TAG, "Success: $response")
+                
+                if (!isAdded) return@launch
+                
+                latestWinningNumbers = listOf(
+                    response.drwtNo1, response.drwtNo2, response.drwtNo3,
+                    response.drwtNo4, response.drwtNo5, response.drwtNo6
+                ).sorted()
+                latestBonusNumber = response.bnusNo
+                
+                // 당첨일 타임스탬프 설정 (토요일 저녁 8시 45분)
+                val drawDate = drawDateFormat.parse(response.drwNoDate) ?: return@launch
+                val calendar = Calendar.getInstance().apply {
+                    time = drawDate
+                    set(Calendar.HOUR_OF_DAY, 20)
+                    set(Calendar.MINUTE, 45)
+                }
+                latestDrawDate = calendar.timeInMillis
+                
+                // 히스토리 업데이트
+                viewModel.updateWinningNumbers(
+                    latestWinningNumbers ?: return@launch,
+                    latestBonusNumber ?: return@launch,
+                    latestDrawDate
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, "Network failure", e)
+                if (isAdded) {
+                    Toast.makeText(context, "당첨번호를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
-
-            override fun onFailure(call: Call<LottoResponse>, t: Throwable) {
-                // 에러 처리
-            }
-        })
+        }
     }
 
     private fun updateHistoryDisplay(history: List<LottoNumber>) {
+        if (!isAdded) return
+        
         historyContainer.removeAllViews()
         
         if (history.isEmpty()) {
@@ -142,6 +155,8 @@ class HistoryFragment : Fragment() {
     }
 
     private fun addDateHeader(date: String) {
+        if (!isAdded) return
+        
         val dateHeader = TextView(context).apply {
             text = date
             textSize = 18f
@@ -152,6 +167,8 @@ class HistoryFragment : Fragment() {
     }
 
     private fun addNumberEntry(number: LottoNumber) {
+        if (!isAdded) return
+        
         val numberView = TextView(context).apply {
             val numbersText = number.numbers.sorted().joinToString(", ")
             
@@ -193,8 +210,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun getDateString(timestamp: Long): String {
-        val sdf = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
-        return sdf.format(Date(timestamp))
+        return dateFormat.format(Date(timestamp))
     }
 
     private fun setupClearButton() {
@@ -204,6 +220,8 @@ class HistoryFragment : Fragment() {
     }
 
     private fun showClearConfirmationDialog() {
+        if (!isAdded) return
+        
         AlertDialog.Builder(requireContext())
             .setTitle("히스토리 비우기")
             .setMessage("저장된 모든 번호를 삭제하시겠습니까?")

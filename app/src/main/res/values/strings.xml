@@ -48,4 +48,6 @@
     <string name="history_button_description">히스토리</string>
     <string name="home_button_description">홈</string>
     <string name="winning_button_description">당첨번호 확인</string>
+    <string name="round_format">제 %d회 당첨번호</string>
+    <string name="prize_format">총 당첨금액: %d원</string>
 </resources>

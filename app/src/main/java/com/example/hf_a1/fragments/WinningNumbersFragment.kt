@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.hf_a1.R
 import com.example.hf_a1.network.LottoService
 import com.example.hf_a1.network.LottoResponse
@@ -20,6 +21,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.launch
 
 class WinningNumbersFragment : Fragment() {
     private lateinit var drawNumberText: TextView
@@ -44,7 +46,7 @@ class WinningNumbersFragment : Fragment() {
             .build()
 
         Retrofit.Builder()
-            .baseUrl("https://www.dhlottery.co.kr")
+            .baseUrl("https://www.dhlottery.co.kr/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -112,52 +114,56 @@ class WinningNumbersFragment : Fragment() {
         val latestRound = calculateLatestRound()
         Log.d("WinningNumbers", "Fetching round: $latestRound")
         
-        currentCall = service.getWinningNumbers(latestRound)
-        currentCall?.enqueue(object : Callback<LottoResponse> {
-            override fun onResponse(call: Call<LottoResponse>, response: Response<LottoResponse>) {
-                if (!isAdded) return
-                
-                if (response.isSuccessful) {
-                    response.body()?.let { 
-                        Log.d("WinningNumbers", "Success: $it")
-                        updateUI(it)
-                    } ?: run {
-                        Log.e("WinningNumbers", "Empty response body")
-                    }
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    Log.e("WinningNumbers", "Error: ${response.code()}, $errorBody")
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val response = service.getWinningNumbers(drwNo = latestRound.toString())
+                if (isAdded) {
+                    Log.d("WinningNumbers", "Response: $response")
+                    Log.d("WinningNumbers", "Numbers: ${response.drwtNo1}, ${response.drwtNo2}, ${response.drwtNo3}, ${response.drwtNo4}, ${response.drwtNo5}, ${response.drwtNo6}")
+                    Log.d("WinningNumbers", "Bonus: ${response.bnusNo}")
+                    Log.d("WinningNumbers", "Date: ${response.drwNoDate}")
+                    updateUI(response)
+                }
+            } catch (e: Exception) {
+                if (isAdded) {
+                    Log.e("WinningNumbers", "Network failure", e)
                 }
             }
-
-            override fun onFailure(call: Call<LottoResponse>, t: Throwable) {
-                if (!isAdded) return
-                
-                if (!call.isCanceled) {
-                    Log.e("WinningNumbers", "Network failure", t)
-                }
-            }
-        })
+        }
     }
 
     private fun updateUI(response: LottoResponse) {
-        drawNumberText.text = "제 ${response.drwNo}회 당첨번호"
-        drawDateText.text = "추첨일 : ${response.drwNoDate}"
+        if (!isAdded) return
+
+        // 회차 정보 업데이트
+        drawNumberText.text = getString(R.string.round_format, response.drwNo)
+        drawDateText.text = response.drwNoDate
+
+        // 당첨번호 업데이트
+        val winningNumbers = listOf(
+            response.drwtNo1,
+            response.drwtNo2,
+            response.drwtNo3,
+            response.drwtNo4,
+            response.drwtNo5,
+            response.drwtNo6
+        )
         
-        val numbers = listOf(
-            response.drwtNo1, response.drwtNo2, response.drwtNo3,
-            response.drwtNo4, response.drwtNo5, response.drwtNo6
-        ).sorted()
-        
-        numbers.forEachIndexed { index, number ->
-            numberViews[index].apply {
-                text = String.format("%02d", number)
-                setBackgroundResource(getBackgroundForNumber(number))
-            }
+        // 각 번호를 개별 TextView에 표시
+        winningNumbers.forEachIndexed { index, number ->
+            numberViews[index].text = number.toString()
+            numberViews[index].setBackgroundResource(getBackgroundForNumber(number))
         }
 
-        // Calculate and display next draw info
+        // 보너스 번호 업데이트 (number6는 보너스 번호로 사용)
+        val bonusNumberView = view?.findViewById<TextView>(R.id.number6)
+        bonusNumberView?.text = response.bnusNo.toString()
+        bonusNumberView?.setBackgroundResource(getBackgroundForNumber(response.bnusNo))
+
+        // 다음 추첨 정보 업데이트
         updateNextDrawInfo(response.drwNoDate)
+
+        showContent()
     }
 
     private fun getBackgroundForNumber(number: Int): Int {
@@ -170,24 +176,37 @@ class WinningNumbersFragment : Fragment() {
         }
     }
 
-    private fun updateNextDrawInfo(lastDrawDate: String) {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val lastDraw = sdf.parse(lastDrawDate)
-        val calendar = Calendar.getInstance().apply {
-            time = lastDraw
-            add(Calendar.DATE, 7)  // Next draw is 7 days after
-            set(Calendar.HOUR_OF_DAY, 20)
-            set(Calendar.MINUTE, 45)
+    private fun updateNextDrawInfo(lastDrawDate: String?) {
+        if (lastDrawDate.isNullOrEmpty()) {
+            Log.e("WinningNumbers", "Invalid draw date: $lastDrawDate")
+            remainingTimeText.text = "다음 추첨일 정보를 가져올 수 없습니다."
+            nextDrawDateText.text = ""
+            return
         }
 
-        val now = Calendar.getInstance()
-        val diffInMillis = calendar.timeInMillis - now.timeInMillis
-        val days = diffInMillis / (24 * 60 * 60 * 1000)
-        val hours = (diffInMillis % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)
-        val minutes = (diffInMillis % (60 * 60 * 1000)) / (60 * 1000)
+        try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val lastDraw = sdf.parse(lastDrawDate)
+            val calendar = Calendar.getInstance().apply {
+                time = lastDraw
+                add(Calendar.DATE, 7)  // Next draw is 7 days after
+                set(Calendar.HOUR_OF_DAY, 20)
+                set(Calendar.MINUTE, 45)
+            }
 
-        remainingTimeText.text = "[ $days ]일 [ $hours ]시간 [ $minutes ]분\n남았습니다."
-        nextDrawDateText.text = "추첨일 : ${sdf.format(calendar.time)}"
+            val now = Calendar.getInstance()
+            val diffInMillis = calendar.timeInMillis - now.timeInMillis
+            val days = diffInMillis / (24 * 60 * 60 * 1000)
+            val hours = (diffInMillis % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000)
+            val minutes = (diffInMillis % (60 * 60 * 1000)) / (60 * 1000)
+
+            remainingTimeText.text = "[ $days ]일 [ $hours ]시간 [ $minutes ]분\n남았습니다."
+            nextDrawDateText.text = "추첨일 : ${sdf.format(calendar.time)}"
+        } catch (e: Exception) {
+            Log.e("WinningNumbers", "Error parsing date: $lastDrawDate", e)
+            remainingTimeText.text = "다음 추첨일 정보를 가져올 수 없습니다."
+            nextDrawDateText.text = ""
+        }
     }
 
     private fun calculateLatestRound(): Int {
@@ -200,6 +219,10 @@ class WinningNumbersFragment : Fragment() {
         val diffInWeeks = (diffInMillis / (7 * 24 * 60 * 60 * 1000)).toInt()
         
         return diffInWeeks + 1
+    }
+
+    private fun showContent() {
+        // Implement the logic to show the content
     }
 
     override fun onDestroyView() {
