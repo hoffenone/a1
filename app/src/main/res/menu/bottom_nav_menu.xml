@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_generate"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/menu_generate" />
-    <item
-        android:id="@+id/nav_history"
+        android:id="@+id/navigation_history"
         android:icon="@android:drawable/ic_menu_recent_history"
-        android:title="@string/menu_history" />
+        android:title="히스토리"/>
     <item
-        android:id="@+id/nav_winning"
+        android:id="@+id/navigation_home"
+        android:icon="@android:drawable/ic_menu_revert"
+        android:title="홈으로"/>
+    <item
+        android:id="@+id/navigation_winning"
         android:icon="@android:drawable/ic_menu_view"
-        android:title="@string/menu_winning" />
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/menu_settings" />
+        android:title="이번주 당첨번호"/>
 </menu> 

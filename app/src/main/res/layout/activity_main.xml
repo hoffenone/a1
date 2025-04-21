@@ -81,7 +81,7 @@
         android:id="@+id/adButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="광고보고 한세트 더 뽑기"
+        android:text="생성 횟수 늘리기"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:fontFamily="@font/black_han_sans"

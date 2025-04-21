@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/generatedNumbersFragment"
+        android:name="com.example.hf_a1.fragments.GeneratedNumbersFragment"
+        android:label="Generated Numbers" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.example.hf_a1.fragments.HistoryFragment"
+        android:label="History" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.hf_a1.fragments.HomeFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/winningNumbersFragment"
+        android:name="com.example.hf_a1.fragments.WinningNumbersFragment"
+        android:label="Winning Numbers" />
+
+</navigation> 

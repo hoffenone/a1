@@ -30,4 +30,15 @@
     <color name="lotto_21_30">#FE862F</color>
     <color name="lotto_31_40">#C4C4C4</color>
     <color name="lotto_41_45">#84EEAA</color>
+
+    <color name="lotto_ball_default">#FFFFFF</color>
+    <color name="lotto_ball_1_10">#FBC400</color>
+    <color name="lotto_ball_11_20">#69C8F2</color>
+    <color name="lotto_ball_21_30">#FF7272</color>
+    <color name="lotto_ball_31_40">#AAAAAA</color>
+    <color name="lotto_ball_41_45">#B0D840</color>
+    <color name="lotto_ball_text">#000000</color>
+
+    <color name="bottom_nav_item_color">#FF5722</color>
+    <color name="bottom_nav_ripple_color">#FF5722</color>
 </resources>
