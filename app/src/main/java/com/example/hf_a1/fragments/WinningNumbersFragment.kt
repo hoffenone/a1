@@ -1,14 +1,18 @@
 package com.example.hf_a1.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.hf_a1.MainActivity
 import com.example.hf_a1.R
+import com.example.hf_a1.databinding.FragmentWinningNumbersBinding
 import com.example.hf_a1.network.LottoService
 import com.example.hf_a1.network.LottoResponse
 import retrofit2.Call
@@ -24,6 +28,8 @@ import java.util.*
 import kotlinx.coroutines.launch
 
 class WinningNumbersFragment : Fragment() {
+    private var _binding: FragmentWinningNumbersBinding? = null
+    private val binding get() = _binding!!
     private lateinit var drawNumberText: TextView
     private lateinit var drawDateText: TextView
     private lateinit var numberViews: List<TextView>
@@ -58,8 +64,9 @@ class WinningNumbersFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_winning_numbers, container, false)
+    ): View {
+        _binding = FragmentWinningNumbersBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,12 +104,24 @@ class WinningNumbersFragment : Fragment() {
         }
 
         historyButton.setOnClickListener {
-            // TODO: Navigate to history
+            try {
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainer, HistoryFragment())
+                    .addToBackStack(null)
+                    .commit()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "히스토리 화면으로 이동할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         homeButton.setOnClickListener {
-            // 메인화면으로 돌아가기
-            requireActivity().supportFragmentManager.popBackStack()
+            try {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "홈 화면으로 이동할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         winningButton.setOnClickListener {
@@ -228,5 +247,6 @@ class WinningNumbersFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         currentCall?.cancel()
+        _binding = null
     }
 } 

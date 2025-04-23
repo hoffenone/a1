@@ -50,4 +50,7 @@
     <string name="winning_button_description">당첨번호 확인</string>
     <string name="round_format">제 %d회 당첨번호</string>
     <string name="prize_format">총 당첨금액: %d원</string>
+    <string name="default_notification_channel_id">default_channel</string>
+    <string name="default_notification_channel_name">Default Channel</string>
+    <string name="default_notification_channel_description">Default notification channel for the app</string>
 </resources>

@@ -72,10 +72,11 @@
                     android:id="@+id/shareSetA"
                     android:layout_width="@dimen/share_button_size"
                     android:layout_height="@dimen/share_button_size"
-                    android:src="@drawable/ic_arrow_forward"
+                    android:src="@drawable/ic_share"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="A set 공유하기"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp"
+                    app:tint="@color/black"/>
             </LinearLayout>
 
             <View
@@ -111,10 +112,11 @@
                     android:id="@+id/shareSetB"
                     android:layout_width="@dimen/share_button_size"
                     android:layout_height="@dimen/share_button_size"
-                    android:src="@drawable/ic_arrow_forward"
+                    android:src="@drawable/ic_share"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="B set 공유하기"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp"
+                    app:tint="@color/black"/>
             </LinearLayout>
 
             <View
@@ -150,10 +152,11 @@
                     android:id="@+id/shareSetC"
                     android:layout_width="@dimen/share_button_size"
                     android:layout_height="@dimen/share_button_size"
-                    android:src="@drawable/ic_arrow_forward"
+                    android:src="@drawable/ic_share"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="C set 공유하기"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp"
+                    app:tint="@color/black"/>
             </LinearLayout>
 
             <View
@@ -189,10 +192,11 @@
                     android:id="@+id/shareSetD"
                     android:layout_width="@dimen/share_button_size"
                     android:layout_height="@dimen/share_button_size"
-                    android:src="@drawable/ic_arrow_forward"
+                    android:src="@drawable/ic_share"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="D set 공유하기"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp"
+                    app:tint="@color/black"/>
             </LinearLayout>
 
             <View
@@ -228,10 +232,11 @@
                     android:id="@+id/shareSetE"
                     android:layout_width="@dimen/share_button_size"
                     android:layout_height="@dimen/share_button_size"
-                    android:src="@drawable/ic_arrow_forward"
+                    android:src="@drawable/ic_share"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="E set 공유하기"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp"
+                    app:tint="@color/black"/>
             </LinearLayout>
 
             <View

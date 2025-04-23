@@ -6,7 +6,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hf_a1.databinding.ActivityMainBinding
+import com.example.hf_a1.fragments.HistoryFragment
 import com.example.hf_a1.fragments.LoadingFragment
+import com.example.hf_a1.fragments.SettingsFragment
 import com.example.hf_a1.fragments.WinningNumbersFragment
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
@@ -104,7 +106,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListeners() {
         binding.settingsButton.setOnClickListener {
-            // TODO: 설정 화면으로 이동
+            binding.fragmentContainer.visibility = View.VISIBLE
+            hideMainUI()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, SettingsFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         binding.adButton.setOnClickListener {
@@ -112,7 +119,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.historyButton.setOnClickListener {
-            // TODO: 히스토리 화면으로 이동
+            binding.fragmentContainer.visibility = View.VISIBLE
+            hideMainUI()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, HistoryFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         binding.makeNumberButton.setOnClickListener {

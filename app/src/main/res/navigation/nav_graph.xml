@@ -17,11 +17,36 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.hf_a1.fragments.HomeFragment"
-        android:label="Home" />
+        android:label="Home">
+        <action
+            android:id="@+id/action_homeFragment_to_privacyPolicyFragment"
+            app:destination="@id/privacyPolicyFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_termsOfServiceFragment"
+            app:destination="@id/termsOfServiceFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_openSourceLicenseFragment"
+            app:destination="@id/openSourceLicenseFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/winningNumbersFragment"
         android:name="com.example.hf_a1.fragments.WinningNumbersFragment"
         android:label="Winning Numbers" />
+
+    <fragment
+        android:id="@+id/privacyPolicyFragment"
+        android:name="com.example.hf_a1.fragments.PrivacyPolicyFragment"
+        android:label="PrivacyPolicyFragment" />
+
+    <fragment
+        android:id="@+id/termsOfServiceFragment"
+        android:name="com.example.hf_a1.fragments.TermsOfServiceFragment"
+        android:label="TermsOfServiceFragment" />
+
+    <fragment
+        android:id="@+id/openSourceLicenseFragment"
+        android:name="com.example.hf_a1.fragments.OpenSourceLicenseFragment"
+        android:label="OpenSourceLicenseFragment" />
 
 </navigation> 

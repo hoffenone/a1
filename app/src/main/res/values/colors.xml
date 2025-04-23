@@ -7,11 +7,63 @@
     <color name="teal_700">#FF018786</color>
     
     <!-- 기본 색상 -->
-    <color name="black">#333333</color>
-    <color name="white">#FFFFFF</color>
-    <color name="gray">#757575</color>
-    <color name="light_gray">#F5F5F5</color>
-    <color name="dark_background">#121212</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary">#FF6200EE</color>
+    <color name="primary_dark">#FF3700B3</color>
+    <color name="secondary">#FF03DAC5</color>
+    <color name="secondary_dark">#FF018786</color>
+    <color name="gray">#FFCCCCCC</color>
+    <color name="light_gray">#FFEEEEEE</color>
+    <color name="dark_gray">#FF666666</color>
+    <color name="red">#FFFF0000</color>
+    <color name="green">#FF00FF00</color>
+    <color name="blue">#FF0000FF</color>
+    <color name="yellow">#FFFFFF00</color>
+    <color name="purple">#FF800080</color>
+    <color name="orange">#FFFFA500</color>
+    <color name="pink">#FFFFC0CB</color>
+    <color name="brown">#FFA52A2A</color>
+    <color name="cyan">#FF00FFFF</color>
+    <color name="magenta">#FFFF00FF</color>
+    <color name="lime">#FF00FF00</color>
+    <color name="teal">#FF008080</color>
+    <color name="indigo">#FF4B0082</color>
+    <color name="amber">#FFFFBF00</color>
+    <color name="deep_purple">#FF673AB7</color>
+    <color name="deep_orange">#FFFF5722</color>
+    <color name="light_blue">#FF03A9F4</color>
+    <color name="light_green">#FF8BC34A</color>
+    <color name="light_red">#FFFF5252</color>
+    <color name="light_yellow">#FFFFEB3B</color>
+    <color name="light_purple">#FFE040FB</color>
+    <color name="light_orange">#FFFFB74D</color>
+    <color name="light_pink">#FFFF80AB</color>
+    <color name="light_brown">#FFBCAAA4</color>
+    <color name="light_cyan">#FF4DD0E1</color>
+    <color name="light_magenta">#FFF48FB1</color>
+    <color name="light_lime">#FFCDDC39</color>
+    <color name="light_teal">#FF4DB6AC</color>
+    <color name="light_indigo">#FF7986CB</color>
+    <color name="light_amber">#FFFFD54F</color>
+    <color name="light_deep_purple">#FF9575CD</color>
+    <color name="light_deep_orange">#FFFFAB91</color>
+    <color name="dark_blue">#FF1976D2</color>
+    <color name="dark_green">#FF388E3C</color>
+    <color name="dark_red">#FFD32F2F</color>
+    <color name="dark_yellow">#FFFBC02D</color>
+    <color name="dark_purple">#FF7B1FA2</color>
+    <color name="dark_orange">#FFF57C00</color>
+    <color name="dark_pink">#FFC2185B</color>
+    <color name="dark_brown">#FF5D4037</color>
+    <color name="dark_cyan">#FF0097A7</color>
+    <color name="dark_magenta">#FFC2185B</color>
+    <color name="dark_lime">#FFAFB42B</color>
+    <color name="dark_teal">#FF00796B</color>
+    <color name="dark_indigo">#FF303F9F</color>
+    <color name="dark_amber">#FFFFA000</color>
+    <color name="dark_deep_purple">#FF512DA8</color>
+    <color name="dark_deep_orange">#FFE64A19</color>
     
     <!-- 당첨 등수별 색상 -->
     <color name="win_first">#FFD32F2F</color>
@@ -25,11 +77,11 @@
     <color name="bottom_nav_text_color">#333333</color>
 
     <!-- 로또 번호 범위별 색상 -->
-    <color name="lotto_1_10">#FDD75D</color>
-    <color name="lotto_11_20">#98DEF8</color>
-    <color name="lotto_21_30">#FE862F</color>
-    <color name="lotto_31_40">#C4C4C4</color>
-    <color name="lotto_41_45">#84EEAA</color>
+    <color name="lotto_1_10">#FBC400</color>
+    <color name="lotto_11_20">#69C8F2</color>
+    <color name="lotto_21_30">#FF7272</color>
+    <color name="lotto_31_40">#AAAAAA</color>
+    <color name="lotto_41_45">#B0D840</color>
 
     <color name="lotto_ball_default">#FFFFFF</color>
     <color name="lotto_ball_1_10">#FBC400</color>
